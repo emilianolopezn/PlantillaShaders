@@ -78,6 +78,10 @@ Shader::Shader(const char* rutaVertexShader,
 	glLinkProgram(shaderID);
 
 	//7.- Verificar si hubo errores en la vinculacion
+	verificarVinculacion(shaderID);
+
+	//8.- Usar el programa
+	glUseProgram(shaderID);
 
 }
 
@@ -108,4 +112,25 @@ void Shader::verificarCompilacion(GLuint id) {
 		
 	}
 
+}
+
+void Shader::verificarVinculacion(GLuint id) {
+	GLint estadoVinculacion, estadoValidacion;
+	glGetProgramiv(id, GL_LINK_STATUS, &estadoVinculacion);
+	if (estadoVinculacion == GL_FALSE) {
+		cout << "No se pudo vincular programa" << endl;
+	}
+
+	glGetProgramiv(id, GL_VALIDATE_STATUS, &estadoValidacion);
+	if (estadoValidacion == GL_FALSE) {
+		cout << "No se pudo validar vinculación" << endl;
+	}
+}
+
+void Shader::enlazar() {
+	glUseProgram(shaderID);
+}
+
+void Shader::desenlazar() {
+	glUseProgram(0);
 }
