@@ -6,7 +6,7 @@
 in vec4 fragmentColor;
 
 //Atributos de salida
-//1ro define la visualizacion del fragmeno
+//1ro define la visualizacion del fragmento
 out vec4 salidaColor;
 
 void main() {
