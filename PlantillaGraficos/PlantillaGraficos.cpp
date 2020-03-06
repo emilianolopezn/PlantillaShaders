@@ -100,6 +100,35 @@ int main()
 		"FragmentShader.shader";
 	shader = new Shader(rutaVertexShader, rutaFragmentShader);
 
+	//Mapeo de atributos
+	posicionID =
+		glGetAttribLocation(shader->getID(), "posicion");
+	colorID =
+		glGetAttribLocation(shader->getID(), "color");
+
+	shader->desenlazar();
+
+	//Crear el vertex array del triangulo
+	glGenVertexArrays(1, &vertexArrayTrianguloID);
+	glBindVertexArray(vertexArrayTrianguloID);
+	//Vertex buffer
+	glGenBuffers(1, &bufferTrianguloID);
+	glBindBuffer(GL_ARRAY_BUFFER, bufferTrianguloID);
+	//Asociar datos al buffer
+	glBufferData(GL_ARRAY_BUFFER,
+		sizeof(Vertice) * triangulo.size(),
+		triangulo.data(), GL_STATIC_DRAW);
+	//Habilitar atributos de shader
+	glEnableVertexAttribArray(posicionID);
+	glEnableVertexAttribArray(colorID);
+	//Especificar a OpenGL como comunicarse
+	glVertexAttribPointer(posicionID,
+		3, GL_FLOAT, GL_FALSE,
+		sizeof(Vertice), 0);
+
+
+
+
 	//Ciclo de dibujo (Draw loop)
 	while (!glfwWindowShouldClose(window)) {
 		//Establecer region de dibujo
