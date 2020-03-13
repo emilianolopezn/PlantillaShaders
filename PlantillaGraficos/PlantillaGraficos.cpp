@@ -17,11 +17,16 @@
 #include "Vertice.h"
 #include <vector>
 
+#include "glm/glm.hpp"
+#include "glm/gtx/transform.hpp"
+
 using namespace std;
+using namespace glm;
 
 //Cada elemento que queramos renderear necesita 
 //Un vertex array y un buffer
 vector<Vertice> triangulo;
+mat4 transformacionesTriangulo;
 GLuint vertexArrayTrianguloID;
 GLuint bufferTrianguloID;
 
@@ -35,22 +40,23 @@ Shader *shader;
 //del vertex shader
 GLuint posicionID;
 GLuint colorID;
+GLuint transformacionesID;
 
 void inicializarCuadrado() {
 	Vertice v1 = {
-		vec3(-0.2f,0.2f,0.0f),
+		vec4(-0.2f,0.2f,0.0f,1.0f),
 		vec4(0.1f,0.8f,0.2f,1.0f)
 	};
 	Vertice v2 = {
-		vec3(0.2f,0.2f,0.0f),
+		vec4(0.2f,0.2f,0.0f,1.0f),
 		vec4(0.1f,0.8f,0.2f,1.0f)
 	};
 	Vertice v3 = {
-		vec3(0.2f,-0.2f,0.0f),
+		vec4(0.2f,-0.2f,0.0f,1.0f),
 		vec4(0.1f,0.8f,0.2f,1.0f)
 	};
 	Vertice v4 = {
-		vec3(-0.2f,-0.2f,0.0f),
+		vec4(-0.2f,-0.2f,0.0f,1.0f),
 		vec4(0.1f,0.8f,0.2f,1.0f)
 	};
 
@@ -62,20 +68,21 @@ void inicializarCuadrado() {
 
 void inicializarTriangulo() {
 	Vertice v1 = {
-		vec3(0.0f,0.3f,0.0f),
+		vec4(0.0f,0.3f,0.0f,1.0f),
 		vec4(0.8f,0.1f,0.0f,1.0f)
 	};
 	Vertice v2 = {
-		vec3(-0.3f,-0.3f,0.0f),
+		vec4(-0.3f,-0.3f,0.0f,1.0f),
 		vec4(0.8f,0.1f,0.0f,1.0f)
 	};
 	Vertice v3 = {
-		vec3(0.3f,-0.3f,0.0f),
+		vec4(0.3f,-0.3f,0.0f,1.0f),
 		vec4(0.8f,0.1f,0.0f,1.0f)
 	};
 	triangulo.push_back(v1);
 	triangulo.push_back(v2);
 	triangulo.push_back(v3);
+	transformacionesTriangulo = mat4(1.0f);
 }
 
 void dibujar() {
@@ -147,6 +154,8 @@ int main()
 		glGetAttribLocation(shader->getID(), "posicion");
 	colorID =
 		glGetAttribLocation(shader->getID(), "color");
+	transformacionesID =
+		glGetUniformLocation(shader->getID(), "transformaciones");
 
 	shader->desenlazar();
 
